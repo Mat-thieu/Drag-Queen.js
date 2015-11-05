@@ -2,7 +2,7 @@
 
 Make an element draggable
 ```javascript
-    dragqueen('#element');
+dragqueen('#element');
 ```
 
 **More options coming soon!**
