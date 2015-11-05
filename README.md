@@ -5,4 +5,4 @@ Make an element draggable
     dragqueen('#element');
 ```
 
-**More options coming soon**
+**More options coming soon!**
