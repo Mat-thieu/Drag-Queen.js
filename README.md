@@ -1,4 +1,4 @@
-# Drag-Queen.js
+# Drag-queen.js
 **Small and efficient dragging script which isn't currently being any developed further.**
 
 The intention was to create a full-fledged drag and drop library to compete with the (scarce amount of) other drag and drop libraries.
