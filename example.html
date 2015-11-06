@@ -3,35 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Drag Queen example</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.5.4/dragula.min.css">
     <style>
         body{
+            font-family: Helvetica;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
         #testBox{
-            width: 300px;
-            height: 300px;
             background: #1abc9c;
         }
-
         #testBox2{
+            background: #9b59b6;
+        }
+        .box{
+            border-radius: 50%;
             width: 200px;
             height: 200px;
-            border-radius: 10px;
-            background: #e74c3c;
+            text-align: center;
+            cursor: move;
+        }
+        .box p{
+            padding-top: 60px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div id="testBox"></div>
-    <div id="testBox2"></div>
+    <div id="testBox2" class="box">
+        <p>jQuery UI</p>
+    </div>
+    <div id="testBox" class="box">
+        <p>Drag Queen</p>
+    </div>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.5.4/dragula.min.js"></script>
 <script src="drag-queen.js"></script>
 <script>
+
+
 dragqueen('#testBox');
 
-dragqueen('#testBox2');
+$('#testBox2').draggable();
+
+
 </script>
 </body>
 </html>
