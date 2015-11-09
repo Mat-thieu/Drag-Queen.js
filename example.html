@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Drag Queen example</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.5.4/dragula.min.css">
+    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.5.4/dragula.min.css"> -->
     <style>
         body{
             font-family: Helvetica;
@@ -30,22 +30,31 @@
             padding-top: 60px;
             font-weight: bold;
         }
+        #testParent{
+            height: 600px;
+            width: 600px;
+            background: #ccc;
+            border: 2px solid tomato;
+            margin: 50px;
+        }
     </style>
 </head>
 <body>
-    <div id="testBox2" class="box">
+    <!-- <div id="testBox2" class="box">
         <p>jQuery UI</p>
+    </div> -->
+
+    <div id="testParent">
+        <div id="testBox" class="box">
+            <p>Drag Queen</p>
+        </div>        
     </div>
-    <div id="testBox" class="box">
-        <p>Drag Queen</p>
-    </div>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.5.4/dragula.min.js"></script>
+
+<!-- <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> -->
+<!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 <script src="drag-queen.js"></script>
 <script>
-dragqueen('#testBox');
-$('#testBox2').draggable();
+var thisDrag = dragqueen('testBox').constraint('testParent');
 </script>
 </body>
 </html>
