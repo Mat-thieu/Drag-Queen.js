@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Drag Queen example</title>
-    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.5.4/dragula.min.css"> -->
     <style>
         body{
             font-family: Helvetica;
@@ -25,6 +23,7 @@
             height: 200px;
             text-align: center;
             cursor: move;
+            position: absolute;
         }
         .box p{
             padding-top: 60px;
@@ -33,28 +32,34 @@
         #testParent{
             height: 600px;
             width: 600px;
-            background: #ccc;
-            border: 2px solid tomato;
+            background: #bdc3c7;
+            border: 2px solid #e74c3c;
             margin: 50px;
+        }
+        #dropzone{
+            margin-left: 150px;
+            margin-top: 150px;
+            height: 300px;
+            width: 300px;
+            background: #34495e;
+            color: #ecf0f1;
+            border: 2px dotted #e74c3c;
         }
     </style>
 </head>
 <body>
-    <!-- <div id="testBox2" class="box">
-        <p>jQuery UI</p>
-    </div> -->
-
     <div id="testParent">
         <div id="testBox" class="box">
             <p>Drag Queen</p>
+        </div>
+        <div id="dropzone">
+                        
         </div>        
     </div>
 
-<!-- <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> -->
-<!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 <script src="drag-queen.js"></script>
 <script>
-var thisDrag = dragqueen('testBox').constraint('testParent');
+var thisDrag = dragqueen('testBox').constraint('testParent').dropzone('dropzone', true);
 </script>
 </body>
 </html>

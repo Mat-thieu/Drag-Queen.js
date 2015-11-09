@@ -6,12 +6,18 @@ var dragqueen = function(el){
     return new DgQn(el);
 }
 
+// dragqueen.helper = {
+    // something something;
+// }
+
 var DgQn = function(el){
     this.ele = document.getElementById(el);
     this.animFrame;
     this.dragElPos = {innerTop : 0, innerLeft : 0, pageLeft : 0, pageTop : 0};
     this.constraintOn;
     this.constraint;
+    this.dropzoneOn;
+    this.dropzone;
     this.init();
 }
 
@@ -26,10 +32,15 @@ DgQn.prototype = {
                 var thisPs = self.dragElPos;
                 var top = e.pageY-self.dragElPos.innerTop;
                 var left = e.pageX-self.dragElPos.innerLeft;
+
+                // Handle top and bottom
                 if(constr.top+5 > top) top = constr.top;
+                else if(constr.bottom+5 < top) top = constr.bottom;
+
+                // Handle left and right
                 if(constr.left-5 > left) left = constr.left;
-                if(constr.right-5 < left) left = constr.right;
-                if(constr.bottom+5 < top) top = constr.bottom;
+                else if(constr.right-5 < left) left = constr.right;
+
                 self.dragElPos.pageTop = top;
                 self.dragElPos.pageLeft = left;
             }
@@ -37,7 +48,6 @@ DgQn.prototype = {
                 self.dragElPos.pageTop = (e.pageY-self.dragElPos.innerTop);
                 self.dragElPos.pageLeft = (e.pageX-self.dragElPos.innerLeft);
             }
-            // console.log(self.dragElPos.pageTop, self.settings.constraint.top);
         }
         var handleMovement = function(){
             // Console log  causes a ton of lag within these regularly fired functions, debug only
@@ -56,24 +66,95 @@ DgQn.prototype = {
             handleMovement();
             // Adding events to the window seem to work a lot smoother than adding it to the element or document
             window.addEventListener('mousemove', setCoordinates, false);
-            window.addEventListener('mouseup', function(){
+            window.addEventListener('mouseup', function(e){
                 window.removeEventListener('mousemove', setCoordinates, false);
                 cancelAnimationFrame(self.animFrame);
+                if(self.dropzoneOn){
+                    var drZone = self.dropzone;
+                    var thisPs = self.dragElPos;
+                    var top = self.dragElPos.pageTop;
+                    var left = self.dragElPos.pageLeft;
+
+                    if(drZone.top+5 < top && drZone.bottom+5 > top && drZone.left-5 < left && drZone.right-5 > left){
+                        console.log('Dropped element!');
+                    }
+                }
+                e.target.removeEventListener(e.type, arguments.callee);
             })
         });
         return this;
     },
+    // EVERYTHING BELOW THIS LINE HAS TO BECOME D.R.Y.
     constraint : function(el){
         var self = this;
         this.constraintOn = true;
-        var constraintElement = document.getElementById(el).getBoundingClientRect();
-        this.constraint = {
-            left : constraintElement.left,
-            top : constraintElement.top,
-            right : (constraintElement.left + constraintElement.width)-self.ele.offsetWidth,
-            bottom : (constraintElement.top + constraintElement.height)-self.ele.offsetHeight
-        };
-        console.log(this.constraint);
+        var setConstraints = function(){
+            console.log('Calculating constraints');
+            var constraintElement = document.getElementById(el).getBoundingClientRect();
+            self.constraint = {
+                left : constraintElement.left,
+                top : constraintElement.top,
+                right : (constraintElement.left + constraintElement.width)-self.ele.offsetWidth,
+                bottom : (constraintElement.top + constraintElement.height)-self.ele.offsetHeight
+            };            
+        }
+        setConstraints();
+
+        // Calculate new constraints every time user stops resizing
+        var rsEndTimer;
+        window.addEventListener('resize', function(){
+            clearTimeout(rsEndTimer);
+            rsEndTimer = setTimeout(function() {
+                setConstraints();
+            }, 200);
+        }, false);
+
+        window.onfocus = function(){
+            // Better would be to check if the window size actually changed, I think, might be inefficient as well
+            setConstraints();
+        }
+        
+        return this;
+    },
+    dropzone : function(el, strict){
+        var self = this;
+        this.dropzoneOn = true;
+        var setDropzone = function(){
+            console.log('Calculating dropzone pos');
+            var dropzoneElement = document.getElementById(el).getBoundingClientRect();
+            if(strict){
+                self.dropzone = {
+                    left : dropzoneElement.left,
+                    top : dropzoneElement.top,
+                    right : ((dropzoneElement.left + dropzoneElement.width)-self.ele.offsetWidth),
+                    bottom : ((dropzoneElement.top + dropzoneElement.height)-self.ele.offsetHeight)
+                };                
+            }
+            else{
+                self.dropzone = {
+                    left : dropzoneElement.left-(self.ele.offsetWidth/2),
+                    top : dropzoneElement.top-(self.ele.offsetHeight/2),
+                    right : ((dropzoneElement.left + dropzoneElement.width)-self.ele.offsetWidth)+(self.ele.offsetWidth/2),
+                    bottom : ((dropzoneElement.top + dropzoneElement.height)-self.ele.offsetHeight)+(self.ele.offsetWidth/2)
+                };
+            }
+        }
+        setDropzone();
+
+        var rsEndTimer;
+        window.addEventListener('resize', function(){
+            clearTimeout(rsEndTimer);
+            rsEndTimer = setTimeout(function() {
+                setDropzone();
+            }, 200);
+        }, false);
+
+        window.onfocus = function(){
+            setDropzone();
+        }
+
+        console.log(this.dropzone);
+        
         return this;
     }
 }
