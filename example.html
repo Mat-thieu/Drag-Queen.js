@@ -63,9 +63,9 @@
 <script>
 var dropz = document.getElementById('dropzone');
 
-var thisDrag = dragqueen('testBox');
-                // .constraint('testParent')
-                // .dropzone('dropzone');
+var thisDrag = dragqueen('testBox')
+                .constraint('testParent')
+                .dropzone('dropzone');
     thisDrag.on({
         drop : function(){
             console.log('Thing was dropped ^_^ ');
