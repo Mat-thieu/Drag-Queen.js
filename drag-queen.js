@@ -6,10 +6,6 @@ var dragqueen = function(el){
     return new DgQn(el);
 }
 
-// dragqueen.helper = {
-    // something something;
-// }
-
 var DgQn = function(el){
     this.ele = document.getElementById(el);
     this.animFrame;
@@ -18,6 +14,7 @@ var DgQn = function(el){
     this.constraint;
     this.dropzoneOn;
     this.dropzone;
+    this.events = {};
     this.init();
 }
 
@@ -57,7 +54,7 @@ DgQn.prototype = {
             self.animFrame = requestAnimationFrame(handleMovement);
         }
         self.ele.addEventListener('mousedown', function(e){
-            self.ele.style.position = "absolute";
+            self.ele.style.position = "fixed";
             var viewportOffset = self.ele.getBoundingClientRect();
             self.dragElPos.innerLeft = (e.pageX - viewportOffset.left);
             self.dragElPos.innerTop = (e.pageY - viewportOffset.top);
@@ -66,20 +63,22 @@ DgQn.prototype = {
             handleMovement();
             // Adding events to the window seem to work a lot smoother than adding it to the element or document
             window.addEventListener('mousemove', setCoordinates, false);
-            window.addEventListener('mouseup', function(e){
-                window.removeEventListener('mousemove', setCoordinates, false);
+            window.addEventListener('mouseup', function _funcHook(){
                 cancelAnimationFrame(self.animFrame);
+                window.removeEventListener('mouseup', _funcHook);
+                console.log('Mouseup was fired');
+                window.removeEventListener('mousemove', setCoordinates, false);
                 if(self.dropzoneOn){
                     var drZone = self.dropzone;
                     var thisPs = self.dragElPos;
                     var top = self.dragElPos.pageTop;
                     var left = self.dragElPos.pageLeft;
-
                     if(drZone.top+5 < top && drZone.bottom+5 > top && drZone.left-5 < left && drZone.right-5 > left){
-                        console.log('Dropped element!');
+                        if('drop' in self.events)
+                            self.events.drop();
                     }
                 }
-                e.target.removeEventListener(e.type, arguments.callee);
+                
             })
         });
         return this;
@@ -100,7 +99,6 @@ DgQn.prototype = {
         }
         setConstraints();
 
-        // Calculate new constraints every time user stops resizing
         var rsEndTimer;
         window.addEventListener('resize', function(){
             clearTimeout(rsEndTimer);
@@ -110,7 +108,6 @@ DgQn.prototype = {
         }, false);
 
         window.onfocus = function(){
-            // Better would be to check if the window size actually changed, I think, might be inefficient as well
             setConstraints();
         }
         
@@ -156,5 +153,13 @@ DgQn.prototype = {
         console.log(this.dropzone);
         
         return this;
+    },
+    on : function(events){
+        for(key in events){
+            if(!(key in this.events))
+                this.events[key] = events[key];
+            else
+                console.error('Attempting to assign duplicate event', key);
+        }
     }
 }

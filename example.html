@@ -19,19 +19,19 @@
         }
         .box{
             border-radius: 50%;
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             text-align: center;
             cursor: move;
             position: absolute;
         }
         .box p{
-            padding-top: 60px;
+            padding-top: 40px;
             font-weight: bold;
         }
         #testParent{
-            height: 600px;
-            width: 600px;
+            height: 800px;
+            width: 800px;
             background: #bdc3c7;
             border: 2px solid #e74c3c;
             margin: 50px;
@@ -43,7 +43,9 @@
             width: 300px;
             background: #34495e;
             color: #ecf0f1;
-            border: 2px dotted #e74c3c;
+            border: 3px dotted #e74c3c;
+            color: #ecf0f1;
+            text-align: center;
         }
     </style>
 </head>
@@ -53,13 +55,23 @@
             <p>Drag Queen</p>
         </div>
         <div id="dropzone">
-                        
-        </div>        
+            <h2>Drop here</h2>     
+        </div>      
     </div>
 
 <script src="drag-queen.js"></script>
 <script>
-var thisDrag = dragqueen('testBox').constraint('testParent').dropzone('dropzone', true);
+var dropz = document.getElementById('dropzone');
+
+var thisDrag = dragqueen('testBox');
+                // .constraint('testParent')
+                // .dropzone('dropzone');
+    thisDrag.on({
+        drop : function(){
+            console.log('Thing was dropped ^_^ ');
+            dropz.style.background = "#2ecc71";
+        }
+    })
 </script>
 </body>
 </html>

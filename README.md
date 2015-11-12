@@ -1,5 +1,5 @@
 # Drag-queen.js
-**Small and efficient dragging script, developing this very very slowly.**
+**This drag and drop script performs very well, the element follows the cursor almost instantly**
 
 The intention was to create a full-fledged drag and drop library to compete with the (scarce amount of) other drag and drop libraries.
 
@@ -24,6 +24,10 @@ If the dragged element lands on a dropzone element fire the dropped event (indev
 // If set to false/nothing only half of the element has to be within the dropzone
 dragqueen('elementId').dropzone('dropzoneId', true);
 ```
+
+## Bugs
+
+Scrolling messes up some coordinates
 
 
 ### Finished alternatives
