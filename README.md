@@ -1,9 +1,5 @@
 # Drag-queen.js
-**This drag and drop script performs very well, the element follows the cursor almost instantly**
-
-The intention was to create a full-fledged drag and drop library to compete with the (scarce amount of) other drag and drop libraries.
-
-I found out it's a pretty tedious task to create a good drag and drop library so I'll be developing this over a very long period of time.
+**Under development**
 
 ## Methods
 
